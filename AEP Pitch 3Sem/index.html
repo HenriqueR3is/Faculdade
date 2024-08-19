@@ -1,0 +1,520 @@
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Usuários</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div>
+        <h1>Registro de Usuários</h1>
+        <form id="userForm">
+          <label for="name">Nome:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="address">Endereço:</label>
+          <input type="text" id="address" name="address" required />
+
+          <label for="cep">CEP (Opcional):</label>
+          <input type="text" id="cep" name="cep" />
+
+          <label for="dateTime">Data e Hora:</label>
+          <input type="datetime-local" id="dateTime" name="dateTime" required />
+
+          <label for="energySource">Fonte de Energia:</label>
+          <select id="energySource" name="energySource" required>
+            <option value="alternativo">Alternativo</option>
+            <option value="fontes_sustentavel">Fontes Sustentável</option>
+            <option value="nao_tem_energia">Não tem Energia</option>
+            <option value="comprada_com_companhia">
+              Comprada com Companhia
+            </option>
+          </select>
+          <button type="submit">Registrar</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Usuários Registrados</h2>
+        <div id="userList"></div>
+      </div>
+
+      <h2>Contagem por Região (Baseada no CEP)</h2>
+      <table id="regionCountTable">
+        <thead>
+          <tr>
+            <th>Região</th>
+            <th>Contagem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Região 1 (SP)</td>
+            <td id="region1">0</td>
+          </tr>
+          <tr>
+            <td>Região 2 (RJ, ES)</td>
+            <td id="region2">0</td>
+          </tr>
+          <tr>
+            <td>Região 3 (MG)</td>
+            <td id="region3">0</td>
+          </tr>
+          <tr>
+            <td>Região 4 (BA, SE)</td>
+            <td id="region4">0</td>
+          </tr>
+          <tr>
+            <td>Região 5 (PE, AL, PB, RN)</td>
+            <td id="region5">0</td>
+          </tr>
+          <tr>
+            <td>Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)</td>
+            <td id="region6">0</td>
+          </tr>
+          <tr>
+            <td>Região 7 (DF, GO, RO, TO, MT, MS)</td>
+            <td id="region7">0</td>
+          </tr>
+          <tr>
+            <td>Região 8 (PR, SC)</td>
+            <td id="region8">0</td>
+          </tr>
+          <tr>
+            <td>Região 9 (RS)</td>
+            <td id="region9">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <h2>Contagem por Fonte de Energia e Região</h2>
+      <table id="energySourceTable">
+        <thead>
+          <tr>
+            <th>Região</th>
+            <th>Alternativo</th>
+            <th>Fontes Sustentável</th>
+            <th>Não tem Energia</th>
+            <th>Comprada com Companhia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Região 1 (SP)</td>
+            <td id="region1_alternativo">0</td>
+            <td id="region1_fontes_sustentavel">0</td>
+            <td id="region1_nao_tem_energia">0</td>
+            <td id="region1_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 2 (RJ, ES)</td>
+            <td id="region2_alternativo">0</td>
+            <td id="region2_fontes_sustentavel">0</td>
+            <td id="region2_nao_tem_energia">0</td>
+            <td id="region2_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 3 (MG)</td>
+            <td id="region3_alternativo">0</td>
+            <td id="region3_fontes_sustentavel">0</td>
+            <td id="region3_nao_tem_energia">0</td>
+            <td id="region3_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 4 (BA, SE)</td>
+            <td id="region4_alternativo">0</td>
+            <td id="region4_fontes_sustentavel">0</td>
+            <td id="region4_nao_tem_energia">0</td>
+            <td id="region4_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 5 (PE, AL, PB, RN)</td>
+            <td id="region5_alternativo">0</td>
+            <td id="region5_fontes_sustentavel">0</td>
+            <td id="region5_nao_tem_energia">0</td>
+            <td id="region5_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)</td>
+            <td id="region6_alternativo">0</td>
+            <td id="region6_fontes_sustentavel">0</td>
+            <td id="region6_nao_tem_energia">0</td>
+            <td id="region6_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 7 (DF, GO, RO, TO, MT, MS)</td>
+            <td id="region7_alternativo">0</td>
+            <td id="region7_fontes_sustentavel">0</td>
+            <td id="region7_nao_tem_energia">0</td>
+            <td id="region7_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 8 (PR, SC)</td>
+            <td id="region8_alternativo">0</td>
+            <td id="region8_fontes_sustentavel">0</td>
+            <td id="region8_nao_tem_energia">0</td>
+            <td id="region8_comprada_com_companhia">0</td>
+          </tr>
+          <tr>
+            <td>Região 9 (RS)</td>
+            <td id="region9_alternativo">0</td>
+            <td id="region9_fontes_sustentavel">0</td>
+            <td id="region9_nao_tem_energia">0</td>
+            <td id="region9_comprada_com_companhia">0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Usuários</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div>
+        <h1>Registro de Usuários</h1>
+        <form id="userForm">
+          <label for="name">Nome:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="address">Endereço:</label>
+          <input type="text" id="address" name="address" required />
+
+          <label for="cep">CEP (Opcional):</label>
+          <input type="text" id="cep" name="cep" />
+
+          <label for="dateTime">Data e Hora:</label>
+          <input type="datetime-local" id="dateTime" name="dateTime" required />
+
+          <label for="energySource">Fonte de Energia:</label>
+          <select id="energySource" name="energySource" required>
+            <option value="alternativo">Alternativo</option>
+            <option value="fontes_sustentavel">Fontes Sustentável</option>
+            <option value="nao_tem_energia">Não tem Energia</option>
+            <option value="comprada_com_companhia">
+              Comprada com Companhia
+            </option>
+          </select>
+          <button type="submit">Registrar</button>
+        </form>
+      </div>
+
+      <div>
+        <h2>Usuários Registrados</h2>
+        <div id="userList"></div>
+      </div>
+
+      <h2>Contagem por Região (Baseada no CEP)</h2>
+      <div class="table" id="regionCountTable">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Região</div>
+            <div class="table-cell">Contagem</div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div class="table-row">
+            <div class="table-cell">Região 1 (SP)</div>
+            <div class="table-cell" id="region1">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 2 (RJ, ES)</div>
+            <div class="table-cell" id="region2">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 3 (MG)</div>
+            <div class="table-cell" id="region3">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 4 (BA, SE)</div>
+            <div class="table-cell" id="region4">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 5 (PE, AL, PB, RN)</div>
+            <div class="table-cell" id="region5">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">
+              Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)
+            </div>
+            <div class="table-cell" id="region6">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 7 (DF, GO, RO, TO, MT, MS)</div>
+            <div class="table-cell" id="region7">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 8 (PR, SC)</div>
+            <div class="table-cell" id="region8">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 9 (RS)</div>
+            <div class="table-cell" id="region9">0</div>
+          </div>
+        </div>
+      </div>
+
+      <h2>Contagem por Fonte de Energia e Região</h2>
+      <div class="table" id="energySourceTable">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Região</div>
+            <div class="table-cell">Alternativo</div>
+            <div class="table-cell">Fontes Sustentável</div>
+            <div class="table-cell">Não tem Energia</div>
+            <div class="table-cell">Comprada com Companhia</div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div class="table-row">
+            <div class="table-cell">Região 1 (SP)</div>
+            <div class="table-cell" id="region1_alternativo">0</div>
+            <div class="table-cell" id="region1_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region1_nao_tem_energia">0</div>
+            <div class="table-cell" id="region1_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 2 (RJ, ES)</div>
+            <div class="table-cell" id="region2_alternativo">0</div>
+            <div class="table-cell" id="region2_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region2_nao_tem_energia">0</div>
+            <div class="table-cell" id="region2_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 3 (MG)</div>
+            <div class="table-cell" id="region3_alternativo">0</div>
+            <div class="table-cell" id="region3_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region3_nao_tem_energia">0</div>
+            <div class="table-cell" id="region3_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 4 (BA, SE)</div>
+            <div class="table-cell" id="region4_alternativo">0</div>
+            <div class="table-cell" id="region4_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region4_nao_tem_energia">0</div>
+            <div class="table-cell" id="region4_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 5 (PE, AL, PB, RN)</div>
+            <div class="table-cell" id="region5_alternativo">0</div>
+            <div class="table-cell" id="region5_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region5_nao_tem_energia">0</div>
+            <div class="table-cell" id="region5_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">
+              Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)
+            </div>
+            <div class="table-cell" id="region6_alternativo">0</div>
+            <div class="table-cell" id="region6_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region6_nao_tem_energia">0</div>
+            <div class="table-cell" id="region6_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 7 (DF, GO, RO, TO, MT, MS)</div>
+            <div class="table-cell" id="region7_alternativo">0</div>
+            <div class="table-cell" id="region7_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region7_nao_tem_energia">0</div>
+            <div class="table-cell" id="region7_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 8 (PR, SC)</div>
+            <div class="table-cell" id="region8_alternativo">0</div>
+            <div class="table-cell" id="region8_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region8_nao_tem_energia">0</div>
+            <div class="table-cell" id="region8_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 9 (RS)</div>
+            <div class="table-cell" id="region9_alternativo">0</div>
+            <div class="table-cell" id="region9_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region9_nao_tem_energia">0</div>
+            <div class="table-cell" id="region9_comprada_com_companhia">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Usuários</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <h1>Registro de Usuários</h1>
+        <form id="userForm">
+          <label for="name">Nome:</label>
+          <input type="text" id="name" name="name" required />
+          <label for="address">Endereço:</label>
+          <input type="text" id="address" name="address" required />
+          <label for="cep">CEP (Opcional):</label>
+          <input type="text" id="cep" name="cep" />
+          <label for="dateTime">Data e Hora:</label>
+          <input type="datetime-local" id="dateTime" name="dateTime" required />
+          <label for="energySource">Fonte de Energia:</label>
+          <select id="energySource" name="energySource" required>
+            <option value="alternativo">Alternativo</option>
+            <option value="fontes_sustentavel">Fontes Sustentável</option>
+            <option value="nao_tem_energia">Não tem Energia</option>
+            <option value="comprada_com_companhia">
+              Comprada com Companhia
+            </option>
+          </select>
+          <button type="submit">Registrar</button>
+        </form>
+      </div>
+      <div>
+        <h2>Usuários Registrados</h2>
+        <div id="userList"></div>
+      </div>
+      <h2>Contagem por Região (Baseada no CEP)</h2>
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Região</div>
+            <div class="table-cell">Contagem</div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div class="table-row">
+            <div class="table-cell">Região 1 (SP)</div>
+            <div class="table-cell" id="region1">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 2 (RJ, ES)</div>
+            <div class="table-cell" id="region2">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 3 (MG)</div>
+            <div class="table-cell" id="region3">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 4 (BA, SE)</div>
+            <div class="table-cell" id="region4">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 5 (PE, AL, PB, RN)</div>
+            <div class="table-cell" id="region5">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">
+              Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)
+            </div>
+            <div class="table-cell" id="region6">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 7 (DF, GO, RO, TO, MT, MS)</div>
+            <div class="table-cell" id="region7">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 8 (PR, SC)</div>
+            <div class="table-cell" id="region8">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 9 (RS)</div>
+            <div class="table-cell" id="region9">0</div>
+          </div>
+        </div>
+      </div>
+      <h2>Contagem por Fonte de Energia e Região</h2>
+      <div class="table">
+        <div class="table-header">
+          <div class="table-row">
+            <div class="table-cell">Região</div>
+            <div class="table-cell">Alternativo</div>
+            <div class="table-cell">Fontes Sustentável</div>
+            <div class="table-cell">Não tem Energia</div>
+            <div class="table-cell">Comprada com Companhia</div>
+          </div>
+        </div>
+        <div class="table-body">
+          <div class="table-row">
+            <div class="table-cell">Região 1 (SP)</div>
+            <div class="table-cell" id="region1_alternativo">0</div>
+            <div class="table-cell" id="region1_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region1_nao_tem_energia">0</div>
+            <div class="table-cell" id="region1_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 2 (RJ, ES)</div>
+            <div class="table-cell" id="region2_alternativo">0</div>
+            <div class="table-cell" id="region2_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region2_nao_tem_energia">0</div>
+            <div class="table-cell" id="region2_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 3 (MG)</div>
+            <div class="table-cell" id="region3_alternativo">0</div>
+            <div class="table-cell" id="region3_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region3_nao_tem_energia">0</div>
+            <div class="table-cell" id="region3_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 4 (BA, SE)</div>
+            <div class="table-cell" id="region4_alternativo">0</div>
+            <div class="table-cell" id="region4_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region4_nao_tem_energia">0</div>
+            <div class="table-cell" id="region4_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 5 (PE, AL, PB, RN)</div>
+            <div class="table-cell" id="region5_alternativo">0</div>
+            <div class="table-cell" id="region5_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region5_nao_tem_energia">0</div>
+            <div class="table-cell" id="region5_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">
+              Região 6 (CE, PI, MA, PA, AP, AM, RR, AC)
+            </div>
+            <div class="table-cell" id="region6_alternativo">0</div>
+            <div class="table-cell" id="region6_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region6_nao_tem_energia">0</div>
+            <div class="table-cell" id="region6_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 7 (DF, GO, RO, TO, MT, MS)</div>
+            <div class="table-cell" id="region7_alternativo">0</div>
+            <div class="table-cell" id="region7_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region7_nao_tem_energia">0</div>
+            <div class="table-cell" id="region7_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 8 (PR, SC)</div>
+            <div class="table-cell" id="region8_alternativo">0</div>
+            <div class="table-cell" id="region8_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region8_nao_tem_energia">0</div>
+            <div class="table-cell" id="region8_comprada_com_companhia">0</div>
+          </div>
+          <div class="table-row">
+            <div class="table-cell">Região 9 (RS)</div>
+            <div class="table-cell" id="region9_alternativo">0</div>
+            <div class="table-cell" id="region9_fontes_sustentavel">0</div>
+            <div class="table-cell" id="region9_nao_tem_energia">0</div>
+            <div class="table-cell" id="region9_comprada_com_companhia">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>
